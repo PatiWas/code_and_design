@@ -2,6 +2,11 @@
 
 let drehwinkel=0; // we just randomly create a value that we can manipulate
 let drehwinkelminus=0
+let bild;
+
+function preload(){
+  bild=loadImage("images/bildhaus.png");
+}
 
 
 function setup() {
@@ -12,7 +17,9 @@ function setup() {
 
 
 function draw() {
-  background(0);
+  tint(255, 50);
+image(bild,0,0,windowWidth,windowHeight);
+image(bild,0,0,1000,1000 );
 
 push();
 //Koordinatensystem verschieben
@@ -42,4 +49,10 @@ rect(0,0,400,400)
 drehwinkel = drehwinkel +1;
 drehwinkelminus = drehwinkelminus -1;
 
+}
+
+function keyPressed(){
+  if(key=='s'){
+    saveCanvas('screenshot.png')
+  }
 }
