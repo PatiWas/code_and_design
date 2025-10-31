@@ -1,62 +1,51 @@
-let XSlider;
-let Yslider;
+// create the Slider Parameters I want to control
+let SizeSlider;
+let DistanceSlider;
 let HueSlider;
 
-function setup (){
-  createCanvas(windowWidth, windowHeight)
-
-XSlider = createSlider (0, 255, 10)
-XSlider.position (20,20);
-
-YsliderSlider = createSlider (0, 255, 10)
-YsliderSlider.position (20,40);
-
-HueSlider = createSlider (0, 255, 10)
-HueSlider.position (20,60);
-
-}
-
-function draw() {
-  stroke(150,50,70)
-  let xposition=XSlider.value();
-  line(50,100)
-}
-
-
-
-
-
-
-/*let kreismitte;
-let groesseSlider;
-let moreCircles; 
-
+// here I set up the scene
 function setup() {
-  createCanvas(windowWidth, windowHeight)
- kreismitte = createSlider (0,windowWidth,50)
- kreismitte.position(50,50);
-  
-  groesseSlider = createSlider (0,255,10)
-  groesseSlider.position(50,100);
-  background(170,40,70)
-  
-  moreCircles = createSlider (0,255,10)
-  moreCircles.position (50,75)
+  createCanvas(windowWidth, windowHeight);
+  noStroke();
+  ellipseMode(CENTER);
+
+  // this the slider to control the circle size
+  SizeSlider = createSlider(10, 500, 100); // (min, max, defaultvalue, step)
+  SizeSlider.position(20, 20); // (x, y)
+  SizeSlider.style('width', '500px'); // (property, value (of said property))
+
+  // this is the slider to control the distance apart
+  DistanceSlider = createSlider(0, windowWidth / 2, 100);
+  DistanceSlider.position(20, 50);
+  DistanceSlider.style('width','500px');
+
+  // this is the slider to control hue blending
+  HueSlider = createSlider(0, 255, 100);
+  HueSlider.position(20, 80);
+  HueSlider.style('width', '500px');
 }
 
 function draw() {
-  stroke(150,50,70)
-  let groesse=groesseSlider.value();
-  ellipse(windowWidth/2-100, windowHeight/2, groesse)
-  ellipse(windowWidth/2+100, windowHeight/2, groesse)
+  background(255);
 
-  stroke(150,50,70)
-  let laenge kreismitte. value()
-  ellipse(windowWidth/2, windowHeight/2, laenge)
+  // here we create values and which slider controls what
+  let size = SizeSlider.value();
+  let distance = DistanceSlider.value();
+  let hue = HueSlider.value();
 
-  stroke(150,50,70)
-  let laenge1=moreCircles. value();
-  ellipse(windowWidth/2, windowHeight/2-100, laenge1)
-  ellipse(windowWidth/2, windowHeight/2+100, laenge1)
+  // here we create positions and where they be at
+  let centerX = windowWidth / 2;
+  let centerY = windowHeight / 2;
+
+  // here is the transparent fill for the hue and position for left circle
+  fill(255, hue, 255, 200); // red, green, blue, alpha(opacity?)/ the "hue" is mapped with the hueslider, so "blue"
+  circle(centerX - distance / 2, centerY, size);
+
+  // here is the transparent fill for the hue and position for right circle
+  fill(hue, 0, 255, 200); // hue, saturation, brightness, alpha
+  circle(centerX + distance / 2, centerY, size);
 }
-/*
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
