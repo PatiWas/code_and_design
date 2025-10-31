@@ -1,23 +1,30 @@
 let posX = 0;
-//let posY = 100
+let threshold;
+let posY;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  threshold = windowWidth/2;
 }
 
 function draw() {
   background(220);
 
-  rect(posX, height/2, 50, 50)
+  if(posX < threshold){
+  fill(255,0,0)
+  }else{
+    fill(0,255,0)
+  }
+
+  if(frameCount % 10 == 0){
+    posY = random(100);
+  }
+
+  rect(posX, posY, 50, 50)
 
   posX = posX + 1;
 
-  if(posX < 350){
-    
-  }
-
-  //if(posX == windowWidth-50){
-  //  noLoop();
-  //}
+  //posY = random (windowHeight)
+  // % ist Modulo
 
 }
