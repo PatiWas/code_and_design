@@ -2,8 +2,11 @@
 // Arrays to store positions of each ellipse
 let xPositions = [];
 let yPositions = [];
-const numEllipses = 50;
-const easing = 0.2; // Controls how smooth the following motion is (0-1)
+const numEllipses = 100;
+const easing = 0.1; // Controls how smooth the following motion is (0-1)
+const baseSize = 1000; // Original size for ellipses
+let ellipseSize = baseSize; // Current size for ellipses
+let isEnlarged = false; // Track if ellipses are currently enlarged
 
 
 function setup() {
@@ -37,20 +40,29 @@ function draw() {
       targetY = yPositions[i-1] + randomOffsetY;
     }
     
-ellipse(xPositions[i], yPositions[i], 1000, 1000);
+    // Calculate HSB color for this ellipse (rainbow)
+    let progress = i / (numEllipses - 1); // 0 to 1
+    let hue = lerp(1, 260, progress);
+    stroke(hue, 100, 100);
+    noFill();  // Remove fill
+    
+    ellipse(xPositions[i], yPositions[i], ellipseSize, ellipseSize);
 
     // Smooth movement using linear interpolation
     xPositions[i] += (targetX - xPositions[i]) * easing;
     yPositions[i] += (targetY - yPositions[i]) * easing;
-    
-    // Calculate HSB color for this ellipse (rainbow)
-    let progress = i / (numEllipses - 1); // 0 to 1
-    let hue = lerp(1, 260, progress);
-    let oppositeHue = (hue + 180) % 360;  // Calculate opposite hue
-    stroke(hue, 100, 100);
-    fill(oppositeHue, 100, 100);  // Fill with opposite color
 
 
   }
 }
 
+function mouseClicked() {
+  if (!isEnlarged) {
+    ellipseSize = baseSize + 500; // Increase to larger size
+  } else {
+    ellipseSize = baseSize; // Return to original size
+  }
+  isEnlarged = !isEnlarged; // Toggle the state
+  console.log('Mouse clicked! New size:', ellipseSize);
+  return false; // Prevent default behavior
+}
