@@ -12,9 +12,16 @@ function draw() {
   for (let i = 0; i < 10; i++) {
   // plan: y position ist abhängig von distanz von maus zur mitte
     let distanz = dist(mouseX, mouseY, i*200, height/2);
-    let yPos = map(distanz, 0, width, 0, 300);
-    ellipse(i*200, height/2 - yPos,200,200); 
+    let yPos = map(distanz, 0, width, -300, 300);
+    let d = map(distanz, 0, width, 300, 10);
+    
+    ellipse(i*200, height/2 + yPos,200,200);
+    ellipse(i*200, height/2 - yPos,d,d);
+
   }
+
+// durchmesser soll abhängig von distanz maus zur mitte sein
+
 
  /* background(220);
 
