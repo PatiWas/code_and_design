@@ -1,23 +1,23 @@
 
 
-// Array to store points
+// array for points
 let points = [];
-// Track which point is being dragged
+// selected point, null = no value
 let selectedPoint = null;
-// Maximum distance for connecting lines
-const MAX_DISTANCE = 300;
-// Wobble settings
+
+// constant value -> cannot be changed
+// Maximum distance for connecting lines + wobble effect
+const MAX_DISTANCE = 400;
 const WOBBLE_AMOUNT = 5;
 const WOBBLE_SPEED = 0.02;
 
 function setup() {
-  // Create canvas and set background
+  
   createCanvas(windowWidth, windowHeight);
   background(0);
-  
-  // Set color mode to HSB for rainbow colors
+
   colorMode(HSB);
-  strokeWeight(2);
+  strokeWeight(0);
 }
 
 function draw() {
@@ -33,18 +33,17 @@ function draw() {
       // Only draw if points are within MAX_DISTANCE
       if (d < MAX_DISTANCE) {
         // For closer points, create filled shape
-        if (d < MAX_DISTANCE * 0.5) {
+        if (d < MAX_DISTANCE) {
           // Find a third point to create a triangle
           for (let k = j + 1; k < points.length; k++) {
             let d2 = dist(points[j].x, points[j].y, points[k].x, points[k].y);
             let d3 = dist(points[i].x, points[i].y, points[k].x, points[k].y);
-            
-            if (d2 < MAX_DISTANCE * 0.5 && d3 < MAX_DISTANCE * 0.5) {
-              // Create random fill color
+            // fill the triangle
+            if (d2 < MAX_DISTANCE & d3 < MAX_DISTANCE) {
               noStroke();
-              fill(random(360), 70, 100, 0.3); // Lower opacity for blend effect
+              fill(0);
               
-              // Draw triangle between three points
+              // vertext to draw the triangle between the three points
               beginShape();
               vertex(points[i].x, points[i].y);
               vertex(points[j].x, points[j].y);
@@ -54,7 +53,7 @@ function draw() {
           }
         }
         
-        // Draw connecting lines
+        // connect lines
         stroke(map(d, 0, MAX_DISTANCE, 0, 360), 100, 100);
         strokeWeight(2);
         line(points[i].x, points[i].y, points[j].x, points[j].y);
@@ -66,20 +65,20 @@ function draw() {
   noStroke();
   for (let point of points) {
     if (point === selectedPoint) {
-      // Selected point is yellow
-      fill(60, 100, 100);
+      noFill();
+      stroke(255);
     } else {
-      // Normal points are white
-      fill(255);
-      // Only wobble points that aren't selected
-      point.x = point.baseX + sin(frameCount * WOBBLE_SPEED + point.offset) * WOBBLE_AMOUNT;
-      point.y = point.baseY + cos(frameCount * WOBBLE_SPEED + point.offset) * WOBBLE_AMOUNT;
-    }
-    circle(point.x, point.y, 50);
+        fill(255);
+      // wobble effect, do not wobble point selected
+        point.x = point.baseX + sin(frameCount * WOBBLE_SPEED + point.offset) * WOBBLE_AMOUNT;
+        point.y = point.baseY + cos(frameCount * WOBBLE_SPEED + point.offset) * WOBBLE_AMOUNT;
+    
+      }
+    circle(point.x, point.y, 40);
   }
 }
 
-// When mouse is pressed
+// if mouse is pressed
 function mousePressed() {
   // Check if we clicked near any existing point
   for (let point of points) {
@@ -94,16 +93,16 @@ function mousePressed() {
   points.push({ 
     x: mouseX, 
     y: mouseY,
-    baseX: mouseX, // Store original position
+    baseX: mouseX,
     baseY: mouseY,
-    offset: random(1000) // Random starting point for wobble
+    offset: random(2000) // Random starting point for wobbling
   });
 }
 
 // When mouse is dragged
 function mouseDragged() {
   if (selectedPoint) {
-    // Update position if a point is selected
+    // Update position if point is selected
     selectedPoint.x = mouseX;
     selectedPoint.y = mouseY;
     selectedPoint.baseX = mouseX;
@@ -113,11 +112,12 @@ function mouseDragged() {
 
 // When mouse is released
 function mouseReleased() {
-  // Deselect point when mouse is released
-  selectedPoint = null;
+selectedPoint = null;
 }
 
-// Function to handle window resizing
+// window resizing
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+
 }
+
